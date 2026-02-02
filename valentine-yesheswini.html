@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Yesheswini, Be My Valentine?</title>
+  <style>
+    :root {
+      --bg1: #090016;
+      --bg2: #12001f;
+      --bg3: #2b0016;
+      --glow: #ff2b78;
+      --glow2: #ffd166;
+      --glow3: #72f2ff;
+      --ink: #fff7f2;
+      --card: rgba(255, 255, 255, 0.08);
+      --card-border: rgba(255, 255, 255, 0.28);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      background-color: #0b0015;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+      background:
+        radial-gradient(1200px 700px at 10% 10%, rgba(255, 43, 120, 0.22), transparent 60%),
+        radial-gradient(900px 700px at 90% 20%, rgba(255, 209, 102, 0.18), transparent 55%),
+        radial-gradient(900px 900px at 50% 90%, rgba(114, 242, 255, 0.18), transparent 60%),
+        linear-gradient(140deg, var(--bg1), var(--bg2) 55%, var(--bg3));
+      overflow: hidden;
+    }
+
+    body.hooray {
+      background:
+        radial-gradient(1200px 700px at 20% 20%, rgba(255, 209, 102, 0.28), transparent 60%),
+        radial-gradient(900px 700px at 80% 30%, rgba(114, 242, 255, 0.22), transparent 55%),
+        radial-gradient(900px 900px at 50% 80%, rgba(255, 43, 120, 0.22), transparent 60%),
+        linear-gradient(130deg, #0a001f, #1c0032 55%, #3a0020);
+    }
+
+    .stage {
+      position: relative;
+      padding: 70px 18px 110px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .aura {
+      position: absolute;
+      inset: -20vh -10vw;
+      background:
+        conic-gradient(from 90deg, rgba(255, 43, 120, 0.12), rgba(255, 209, 102, 0.09), rgba(114, 242, 255, 0.08), rgba(255, 43, 120, 0.12));
+      animation: spin 16s linear infinite;
+      filter: blur(18px);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .grid {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(transparent 96%, rgba(255, 255, 255, 0.08) 98%),
+        linear-gradient(90deg, transparent 96%, rgba(255, 255, 255, 0.08) 98%);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.7), transparent 65%);
+      animation: driftGrid 12s linear infinite;
+      opacity: 0.25;
+      pointer-events: none;
+    }
+
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      background: radial-gradient(circle at 30% 30%, #ffffff, #ff3c86 40%, #ff136a 70%);
+      transform: rotate(45deg);
+      border-radius: 6px;
+      opacity: 0.7;
+      animation: floatUp 12s linear infinite;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      background: inherit;
+      border-radius: 50%;
+      top: -11px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -11px;
+      top: 0;
+    }
+
+    .floaters span {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.24), rgba(255, 43, 120, 0.16), transparent 60%);
+      mix-blend-mode: screen;
+      animation: drift 16s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .floaters span:nth-child(1) { top: 6%; left: 8%; animation-delay: 0s; }
+    .floaters span:nth-child(2) { top: 18%; right: 6%; animation-delay: -4s; width: 160px; height: 160px; }
+    .floaters span:nth-child(3) { bottom: 8%; left: 18%; animation-delay: -7s; width: 260px; height: 260px; }
+    .floaters span:nth-child(4) { bottom: 18%; right: 10%; animation-delay: -10s; width: 140px; height: 140px; }
+
+    .card {
+      position: relative;
+      max-width: 880px;
+      width: min(92vw, 880px);
+      padding: 44px 36px 48px;
+      border-radius: 26px;
+      border: 1px solid var(--card-border);
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      box-shadow:
+        0 0 40px rgba(255, 43, 120, 0.28),
+        0 0 90px rgba(255, 209, 102, 0.2),
+        inset 0 0 30px rgba(255, 255, 255, 0.05);
+      text-align: center;
+      z-index: 2;
+    }
+
+    .title {
+      font-family: "Impact", "Trebuchet MS", sans-serif;
+      font-size: clamp(2.4rem, 4vw, 4.4rem);
+      letter-spacing: 0.08em;
+      margin: 0 0 10px;
+      text-transform: uppercase;
+      text-shadow: 0 0 16px rgba(255, 43, 120, 0.7), 0 0 36px rgba(114, 242, 255, 0.5);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    .question {
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      margin: 16px 0 18px;
+      font-weight: 700;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    .typing {
+      font-size: clamp(1.05rem, 2.2vw, 1.4rem);
+      margin: 0 auto 24px;
+      max-width: 620px;
+      line-height: 1.6;
+      min-height: 3.2em;
+      opacity: 0.9;
+    }
+
+    .typing-cursor {
+      display: inline-block;
+      width: 10px;
+      height: 1.2em;
+      background: var(--glow2);
+      margin-left: 4px;
+      animation: blink 1s step-end infinite;
+    }
+
+    .choices {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin: 18px 0 12px;
+    }
+
+    .choice {
+      position: relative;
+      border-radius: 18px;
+      border: 2px solid transparent;
+      padding: 22px 18px;
+      background: rgba(6, 6, 20, 0.55);
+      transition: transform 0.2s ease, border 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .choice::after {
+      content: "";
+      position: absolute;
+      inset: -80% 30% 20% -80%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.18), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .choice:hover {
+      transform: translateY(-4px) scale(1.02);
+      border-color: rgba(255, 209, 102, 0.85);
+      box-shadow: 0 0 28px rgba(255, 209, 102, 0.35);
+    }
+
+    .choice:hover::after { opacity: 0.8; }
+
+    .choice input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .choice .label {
+      display: block;
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .choice.selected {
+      border-color: var(--glow);
+      box-shadow:
+        0 0 18px rgba(255, 43, 120, 0.65),
+        0 0 70px rgba(255, 43, 120, 0.35);
+      transform: translateY(-4px) scale(1.04);
+    }
+
+    .actions {
+      margin-top: 22px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      padding: 12px 26px;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: #160810;
+      background: linear-gradient(120deg, var(--glow), var(--glow2), var(--glow3));
+      box-shadow: 0 0 25px rgba(255, 43, 120, 0.6);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn:hover { transform: scale(1.06); box-shadow: 0 0 36px rgba(255, 209, 102, 0.7); }
+
+    .note {
+      margin-top: 12px;
+      font-size: 0.95rem;
+      opacity: 0.7;
+    }
+
+    .music {
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    .music button {
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.12);
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 30;
+    }
+
+    .piece {
+      position: absolute;
+      width: 10px;
+      height: 16px;
+      background: var(--glow);
+      opacity: 0.9;
+      animation: fall 2.6s linear forwards;
+      border-radius: 4px;
+    }
+
+    .sparkles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 70%);
+      animation: twinkle 2.4s ease-in-out infinite;
+      opacity: 0.8;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(2, 2, 10, 0.75);
+      z-index: 40;
+      padding: 18px;
+    }
+
+    .modal.active { display: flex; }
+
+    .modal-card {
+      max-width: 520px;
+      width: min(90vw, 520px);
+      padding: 30px 28px;
+      background: rgba(12, 6, 20, 0.92);
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+      box-shadow: 0 0 40px rgba(255, 43, 120, 0.45);
+    }
+
+    .modal-card h2 {
+      margin: 0 0 8px;
+      font-size: 1.7rem;
+    }
+
+    .modal-card p {
+      margin: 0 0 18px;
+      opacity: 0.85;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .fireworks {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(255, 209, 102, 0.22), transparent 32%),
+        radial-gradient(circle at 80% 40%, rgba(255, 43, 120, 0.22), transparent 34%),
+        radial-gradient(circle at 50% 70%, rgba(114, 242, 255, 0.18), transparent 30%);
+      opacity: 0.2;
+      animation: flare 2.2s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .hooray {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      z-index: 50;
+      padding: 18px;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 700px at 30% 20%, rgba(255, 209, 102, 0.22), transparent 60%),
+        radial-gradient(900px 700px at 70% 30%, rgba(114, 242, 255, 0.18), transparent 55%),
+        rgba(6, 4, 10, 0.85);
+      backdrop-filter: blur(6px);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .hooray.show { display: flex; opacity: 1; }
+
+    .hooray h2 {
+      margin: 0 0 14px;
+      font-size: clamp(2.6rem, 6vw, 5rem);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-shadow: 0 0 18px rgba(255, 209, 102, 0.8), 0 0 40px rgba(114, 242, 255, 0.7);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+
+    .hooray p {
+      font-size: clamp(1.1rem, 2.6vw, 1.6rem);
+      max-width: 680px;
+      margin: 0;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
+    }
+
+    .hooray .burst {
+      margin-top: 18px;
+      font-size: clamp(1rem, 2.4vw, 1.4rem);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255, 209, 102, 0.9);
+      animation: shimmer 2.6s ease-in-out infinite;
+    }
+
+    .hidden { display: none; }
+
+    @keyframes shimmer {
+      0%, 100% { filter: brightness(1); transform: scale(1); }
+      50% { filter: brightness(1.2); transform: scale(1.02); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes drift {
+      0%, 100% { transform: translateY(0) translateX(0) scale(1); }
+      50% { transform: translateY(-24px) translateX(18px) scale(1.08); }
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-10vh) rotate(0deg); }
+      100% { transform: translateY(110vh) rotate(360deg); }
+    }
+
+    @keyframes flare {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 0.75; }
+    }
+
+    @keyframes driftGrid {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(60px); }
+    }
+
+    @keyframes twinkle {
+      0%, 100% { transform: scale(0.8); opacity: 0.3; }
+      50% { transform: scale(1.2); opacity: 0.9; }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(110vh) translateX(0) rotate(45deg) scale(0.8); opacity: 0; }
+      10% { opacity: 0.6; }
+      100% { transform: translateY(-20vh) translateX(80px) rotate(45deg) scale(1.2); opacity: 0; }
+    }
+
+    @media (max-width: 640px) {
+      .card { padding: 30px 20px 34px; }
+      .choice { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts" id="hearts"></div>
+  <div class="sparkles" id="sparkles"></div>
+  <div class="confetti" id="confetti"></div>
+
+  <div class="stage" id="stage">
+    <div class="aura"></div>
+    <div class="grid" aria-hidden="true"></div>
+    <div class="floaters" aria-hidden="true">
+      <span></span><span></span><span></span><span></span>
+    </div>
+
+    <main class="card" id="card">
+      <div class="fireworks" aria-hidden="true"></div>
+      <h1 class="title">Yesheswini</h1>
+      <div class="question">Will you be my Valentine?</div>
+      <div class="typing" id="typingText"></div>
+
+      <div class="choices" role="group" aria-label="Valentine response">
+        <label class="choice" data-choice="yes">
+          <input type="checkbox" id="yesBox" />
+          <span class="label">Yes</span>
+        </label>
+        <label class="choice" data-choice="no">
+          <input type="checkbox" id="noBox" />
+          <span class="label">No</span>
+        </label>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="submitBtn">Submit</button>
+      </div>
+      <div class="note">Pick one box, then hit submit.</div>
+
+      <div class="music">
+        <span>Music:</span>
+        <button id="musicBtn">Play</button>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <h2>Are you sure?</h2>
+      <p>Are you sure about that?</p>
+      <div class="modal-actions">
+        <button class="btn" id="modalYes">Yes</button>
+        <button class="btn" id="modalNo">No</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hooray" id="hooray">
+    <h2>Hooray!</h2>
+    <p>You just made my heart do backflips. Thank you for being my Valentine.</p>
+    <div class="burst">Forever Starts Now</div>
+  </div>
+
+  <audio id="bgMusic" loop>
+    <source src="valentine.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script>
+    const yesBox = document.getElementById('yesBox');
+    const noBox = document.getElementById('noBox');
+    const choices = document.querySelectorAll('.choice');
+    const submitBtn = document.getElementById('submitBtn');
+    const modal = document.getElementById('modal');
+    const modalYes = document.getElementById('modalYes');
+    const modalNo = document.getElementById('modalNo');
+    const hooray = document.getElementById('hooray');
+    const card = document.getElementById('card');
+    const confetti = document.getElementById('confetti');
+    const sparkles = document.getElementById('sparkles');
+    const hearts = document.getElementById('hearts');
+    const typingText = document.getElementById('typingText');
+    const musicBtn = document.getElementById('musicBtn');
+    const bgMusic = document.getElementById('bgMusic');
+    const stage = document.getElementById('stage');
+
+    const typingLines = [
+      "You are the schmmook to my dook.",
+      "You are my favorite notification.",
+      "Let us turn this into a forever story."
+    ];
+
+    function setChoice(choice) {
+      choices.forEach((el) => el.classList.remove('selected'));
+      if (choice === 'yes') {
+        yesBox.checked = true;
+        noBox.checked = false;
+        document.querySelector('[data-choice="yes"]').classList.add('selected');
+      } else if (choice === 'no') {
+        noBox.checked = true;
+        yesBox.checked = false;
+        document.querySelector('[data-choice="no"]').classList.add('selected');
+      }
+    }
+
+    choices.forEach((el) => {
+      el.addEventListener('click', () => {
+        setChoice(el.dataset.choice);
+      });
+    });
+
+    function launchConfetti() {
+      confetti.innerHTML = '';
+      for (let i = 0; i < 220; i += 1) {
+        const piece = document.createElement('span');
+        piece.className = 'piece';
+        piece.style.left = Math.random() * 100 + 'vw';
+        piece.style.background = i % 3 === 0 ? 'var(--glow)' : (i % 3 === 1 ? 'var(--glow2)' : 'var(--glow3)');
+        piece.style.animationDelay = (Math.random() * 0.8) + 's';
+        piece.style.transform = 'translateY(-10vh) rotate(' + (Math.random() * 360) + 'deg)';
+        confetti.appendChild(piece);
+      }
+    }
+
+    function sprinkleSparkles() {
+      sparkles.innerHTML = '';
+      for (let i = 0; i < 70; i += 1) {
+        const dot = document.createElement('span');
+        dot.className = 'sparkle';
+        dot.style.left = Math.random() * 100 + 'vw';
+        dot.style.top = Math.random() * 100 + 'vh';
+        dot.style.animationDelay = (Math.random() * 2) + 's';
+        sparkles.appendChild(dot);
+      }
+    }
+
+    function fillHearts() {
+      hearts.innerHTML = '';
+      for (let i = 0; i < 140; i += 1) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDelay = (Math.random() * 6) + 's';
+        heart.style.animationDuration = (10 + Math.random() * 6) + 's';
+        heart.style.opacity = (0.4 + Math.random() * 0.6).toFixed(2);
+        heart.style.transform = 'rotate(45deg) scale(' + (0.6 + Math.random() * 1.2) + ')';
+        hearts.appendChild(heart);
+      }
+    }
+
+    function showHooray() {
+      window.location.href = 'valentine-hooray.html';
+    }
+
+    submitBtn.addEventListener('click', () => {
+      if (yesBox.checked) {
+        showHooray();
+        return;
+      }
+
+      if (noBox.checked) {
+        modal.classList.add('active');
+        return;
+      }
+
+      setChoice('yes');
+      showHooray();
+    });
+
+    modalYes.addEventListener('click', () => {
+      modal.classList.remove('active');
+      setChoice('yes');
+      showHooray();
+    });
+
+    modalNo.addEventListener('click', () => {
+      modal.classList.remove('active');
+      setChoice('yes');
+      showHooray();
+    });
+
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) {
+        modal.classList.remove('active');
+      }
+    });
+
+    function typeLines() {
+      let lineIndex = 0;
+      let charIndex = 0;
+      let isDeleting = false;
+
+      function tick() {
+        const currentLine = typingLines[lineIndex];
+        const visible = currentLine.slice(0, charIndex);
+        typingText.innerHTML = visible + '<span class="typing-cursor"></span>';
+
+        if (!isDeleting && charIndex < currentLine.length) {
+          charIndex += 1;
+          setTimeout(tick, 45);
+          return;
+        }
+
+        if (!isDeleting && charIndex === currentLine.length) {
+          isDeleting = true;
+          setTimeout(tick, 1200);
+          return;
+        }
+
+        if (isDeleting && charIndex > 0) {
+          charIndex -= 1;
+          setTimeout(tick, 25);
+          return;
+        }
+
+        if (isDeleting && charIndex === 0) {
+          isDeleting = false;
+          lineIndex = (lineIndex + 1) % typingLines.length;
+          setTimeout(tick, 300);
+        }
+      }
+
+      tick();
+    }
+
+    musicBtn.addEventListener('click', () => {
+      if (bgMusic.paused) {
+        bgMusic.play();
+        musicBtn.textContent = 'Pause';
+      } else {
+        bgMusic.pause();
+        musicBtn.textContent = 'Play';
+      }
+    });
+
+    sprinkleSparkles();
+    fillHearts();
+    setInterval(fillHearts, 12000);
+    typeLines();
+  </script>
+</body>
+</html>

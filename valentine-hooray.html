@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hooray!</title>
+  <style>
+    :root {
+      --glow: #ff2b78;
+      --glow2: #ffd166;
+      --glow3: #72f2ff;
+      --ink: #fff7f2;
+    }
+
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: #0b0015;
+      color: var(--ink);
+      font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+      overflow: hidden;
+    }
+
+    .hooray {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      background:
+        radial-gradient(1200px 700px at 30% 20%, rgba(255, 209, 102, 0.22), transparent 60%),
+        radial-gradient(900px 700px at 70% 30%, rgba(114, 242, 255, 0.18), transparent 55%),
+        radial-gradient(900px 900px at 50% 80%, rgba(255, 43, 120, 0.22), transparent 60%),
+        rgba(6, 4, 10, 0.92);
+    }
+
+    .hooray h2 {
+      margin: 0 0 14px;
+      font-size: clamp(2.6rem, 6vw, 5rem);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-shadow: 0 0 18px rgba(255, 209, 102, 0.8), 0 0 40px rgba(114, 242, 255, 0.7);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+
+    .hooray p {
+      font-size: clamp(1.1rem, 2.6vw, 1.6rem);
+      max-width: 720px;
+      margin: 0 0 16px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
+    }
+
+    .burst {
+      margin-top: 8px;
+      font-size: clamp(1rem, 2.4vw, 1.4rem);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255, 209, 102, 0.9);
+      animation: shimmer 2.6s ease-in-out infinite;
+    }
+
+    .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .piece {
+      position: absolute;
+      width: 10px;
+      height: 16px;
+      background: var(--glow);
+      opacity: 0.9;
+      animation: fall 2.8s linear forwards;
+      border-radius: 4px;
+    }
+
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 5;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      background: radial-gradient(circle at 30% 30%, #ffffff, #ff3c86 40%, #ff136a 70%);
+      transform: rotate(45deg);
+      border-radius: 6px;
+      opacity: 0.7;
+      animation: floatUp 12s linear infinite;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      background: inherit;
+      border-radius: 50%;
+      top: -11px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -11px;
+      top: 0;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    @keyframes shimmer {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.25); }
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-10vh) rotate(0deg); }
+      100% { transform: translateY(110vh) rotate(360deg); }
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(110vh) translateX(0) rotate(45deg) scale(0.8); opacity: 0; }
+      10% { opacity: 0.6; }
+      100% { transform: translateY(-20vh) translateX(80px) rotate(45deg) scale(1.2); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hooray">
+    <h2>Hooray!</h2>
+    <p>You just made my heart do backflips. Thank you for being my Valentine.</p>
+    <div class="burst">Forever Starts Now</div>
+  </div>
+
+  <div class="hearts" id="hearts"></div>
+  <div class="confetti" id="confetti"></div>
+
+  <script>
+    const confetti = document.getElementById('confetti');
+    const hearts = document.getElementById('hearts');
+
+    function launchConfetti() {
+      confetti.innerHTML = '';
+      for (let i = 0; i < 160; i += 1) {
+        const piece = document.createElement('span');
+        piece.className = 'piece';
+        piece.style.left = Math.random() * 100 + 'vw';
+        piece.style.background = i % 3 === 0 ? 'var(--glow)' : (i % 3 === 1 ? 'var(--glow2)' : 'var(--glow3)');
+        piece.style.animationDelay = (Math.random() * 0.8) + 's';
+        piece.style.transform = 'translateY(-10vh) rotate(' + (Math.random() * 360) + 'deg)';
+        confetti.appendChild(piece);
+      }
+    }
+
+    function fillHearts() {
+      hearts.innerHTML = '';
+      for (let i = 0; i < 140; i += 1) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDelay = (Math.random() * 6) + 's';
+        heart.style.animationDuration = (10 + Math.random() * 6) + 's';
+        heart.style.opacity = (0.4 + Math.random() * 0.6).toFixed(2);
+        heart.style.transform = 'rotate(45deg) scale(' + (0.6 + Math.random() * 1.2) + ')';
+        hearts.appendChild(heart);
+      }
+    }
+
+    launchConfetti();
+    fillHearts();
+    setInterval(fillHearts, 12000);
+  </script>
+</body>
+</html>
